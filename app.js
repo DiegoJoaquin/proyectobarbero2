@@ -26,10 +26,15 @@ const DEMO_MODE = (
 /** Cliente de Supabase (null en modo demo) */
 let supabase = null;
 if (!DEMO_MODE) {
-  supabase = window.supabase.createClient(
-    CONFIG.supabase.url,
-    CONFIG.supabase.anonKey
-  );
+  try {
+    supabase = window.supabase.createClient(
+      CONFIG.supabase.url,
+      CONFIG.supabase.anonKey
+    );
+  } catch (e) {
+    console.error('Error al inicializar Supabase. Verificá las credenciales en config.js.', e);
+    // La app continúa en modo demo
+  }
 }
 
 // ────────────────────────────────────────────────────────────

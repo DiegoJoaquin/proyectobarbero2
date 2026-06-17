@@ -25,10 +25,14 @@ const DEMO_MODE = (
 
 let supabase = null;
 if (!DEMO_MODE) {
-  supabase = window.supabase.createClient(
-    CONFIG.supabase.url,
-    CONFIG.supabase.anonKey
-  );
+  try {
+    supabase = window.supabase.createClient(
+      CONFIG.supabase.url,
+      CONFIG.supabase.anonKey
+    );
+  } catch (e) {
+    console.error('Error al inicializar Supabase. Verificá las credenciales en config.js.', e);
+  }
 }
 
 // ────────────────────────────────────────────────────────────
