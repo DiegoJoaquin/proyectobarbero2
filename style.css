@@ -916,31 +916,42 @@ body.demo-mode { padding-top: 38px; }
 
 .pin-keypad {
   display: grid;
-  grid-template-columns: repeat(3, 72px);
-  gap: 10px;
-  margin: 0 auto; /* centrado clave */
+  grid-template-columns: repeat(3, 80px);
+  gap: 12px;
+  margin: 0 auto;
 }
 .pin-key {
-  width: 72px; height: 64px;
+  -webkit-appearance: none;
+  appearance: none;
+  width: 80px;
+  height: 70px;
   border-radius: var(--radius-md);
   background: var(--bg-card);
   border: 1px solid var(--border);
   color: var(--text-primary);
-  font-size: 1.3rem;
+  font-size: 1.4rem;
   font-weight: 600;
   font-family: var(--font-mono);
-  line-height: 1;
   cursor: pointer;
   transition: all var(--transition);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
+  /* Centrado universal — funciona en iOS Safari */
+  position: relative;
   padding: 0;
+  margin: 0;
+}
+.pin-key span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: block;
+  line-height: 1;
+  pointer-events: none;
 }
 .pin-key:hover:not(:disabled) { background: var(--bg-glass); border-color: var(--border-hover); }
 .pin-key:active:not(:disabled) { transform: scale(0.94); }
-.pin-key.del { color: var(--text-secondary); font-size: 1rem; }
+.pin-key.del { color: var(--text-secondary); }
+.pin-key.del span { font-size: 1.1rem; }
 .pin-key:disabled { opacity: 0.4; cursor: not-allowed; }
 
 /* ── Dashboard ────────────────────────────────────────────── */
@@ -970,6 +981,31 @@ body.demo-mode { padding-top: 38px; }
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+.logout-btn {
+  -webkit-appearance: none;
+  appearance: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: var(--radius-full);
+  background: rgba(239,68,68,0.12);
+  border: 1px solid rgba(239,68,68,0.3);
+  color: #F87171;
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.logout-btn:hover {
+  background: rgba(239,68,68,0.22);
+  border-color: rgba(239,68,68,0.5);
+  transform: translateY(-1px);
 }
 
 .admin-date-nav {
