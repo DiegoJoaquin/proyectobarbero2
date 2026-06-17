@@ -40,15 +40,15 @@ const CONFIG = {
 
   // ─── HORARIOS DE TRABAJO ─────────────────────────────────
   workingHours: {
-    weekdays: { start: '09:00', end: '19:00' },  // Lun–Vie
-    saturday: { start: '09:00', end: '16:00' }   // Sáb
+    weekdays: { start: '10:00', end: '20:00' },  // Lun–Vie
+    saturday: { start: '10:00', end: '20:00' }   // Sáb
   },
 
   // Días hábiles: 0=Dom 1=Lun 2=Mar 3=Mié 4=Jue 5=Vie 6=Sáb
   workingDays: [1, 2, 3, 4, 5, 6],
 
   // ─── TURNOS ──────────────────────────────────────────────
-  slotDuration: 45,         // duración de cada turno en minutos
+  slotDuration: 30,         // duración de cada turno en minutos
   maxBookingDaysAhead: 30,  // días máximos que un cliente puede reservar adelante
 
   // ─── SERVICIOS ───────────────────────────────────────────

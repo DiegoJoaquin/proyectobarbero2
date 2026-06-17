@@ -1,4 +1,4 @@
-﻿/* ============================================================
+/* ============================================================
    BLADE & CO. â€” style.css
    Estilo: Neon Oscuro + Glassmorphism
    Fuente: Space Grotesk (Google Fonts)
@@ -612,9 +612,9 @@ body.demo-mode { padding-top: 38px; }
   align-items: center;
   gap: 4px;
   margin-top: 12px;
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   font-weight: 600;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   font-family: var(--font-mono);
 }
 .service-check {
