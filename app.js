@@ -96,7 +96,10 @@ function renderServicesPreview() {
       <span class="service-icon" aria-hidden="true">${s.icon}</span>
       <div class="service-name">${s.name}</div>
       <div class="service-description">${s.description}</div>
-      <div class="service-duration">⏱ ${s.duration} min</div>
+      <div class="service-duration">
+        ⏱ ${formatDuration(s.duration)}
+        ${s.price ? `&nbsp;&nbsp;•&nbsp;&nbsp;💵 ${s.price}` : ''}
+      </div>
     </div>
   `).join('');
   // Abrir modal al tocar una tarjeta de servicio
@@ -114,7 +117,10 @@ function renderServiceCards() {
       <span class="service-icon" aria-hidden="true">${s.icon}</span>
       <div class="service-name">${s.name}</div>
       <div class="service-description">${s.description}</div>
-      <div class="service-duration">⏱ ${s.duration} min</div>
+      <div class="service-duration">
+        ⏱ ${formatDuration(s.duration)}
+        ${s.price ? `&nbsp;&nbsp;•&nbsp;&nbsp;💵 ${s.price}` : ''}
+      </div>
     </div>
   `).join('');
 
@@ -469,6 +475,12 @@ function generateBookingCode() {
 function formatDate(dateStr) {
   if (!dateStr) return '–';
   return new Date(dateStr+'T00:00:00').toLocaleDateString('es-AR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+}
+
+function formatDuration(m) {
+  if (m === 60) return '1 hora';
+  if (m === 90) return '1 h 30 min';
+  return m + ' min';
 }
 
 function formatDateISO(date) {

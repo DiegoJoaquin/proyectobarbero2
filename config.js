@@ -24,9 +24,9 @@ const CONFIG = {
 
   // ─── DATOS DEL NEGOCIO ───────────────────────────────────
   business: {
-    name: 'Blade & Co.',
-    tagline: 'Cortes que hablan por sí solos',
-    address: 'Av. Corrientes 1234, CABA',
+    name: 'Eminence Barber',
+    tagline: 'Juanfade',
+    address: 'Irarrazaval 3054, Local 105B',
     phone: '+54 9 11 0000-0000',
     instagram: '@bladeandco'
   },
@@ -54,35 +54,51 @@ const CONFIG = {
   services: [
     {
       id: 'corte',
-      name: 'Corte Clásico',
-      description: 'Corte con tijera o máquina, perfilado y terminación profesional',
-      duration: 45,
-      price: null,
+      name: 'Corte de cabello',
+      description: '',
+      duration: 30,
+      price: '12.000 CLP',
       icon: '✂️'
     },
     {
-      id: 'barba',
-      name: 'Arreglo de Barba',
-      description: 'Perfilado, afeitado y definición de contornos',
+      id: 'promo2',
+      name: 'Promocion 2x20.000',
+      description: 'Martes, miercoles y jueves.',
+      duration: 60,
+      price: '20.000 CLP',
+      icon: '🔥'
+    },
+    {
+      id: 'promo3',
+      name: 'Promocion 3x25.000',
+      description: 'Martes, miercoles y jueves.',
+      duration: 90,
+      price: '25.000 CLP',
+      icon: '🚀'
+    },
+    {
+      id: 'limpieza',
+      name: 'Corte + Limpieza',
+      description: 'Exfoliación, puntos negros e hidratación.',
       duration: 30,
-      price: null,
+      price: '20.000 CLP',
+      icon: '✨'
+    },
+    {
+      id: 'barba',
+      name: 'Barba',
+      description: '',
+      duration: 30,
+      price: '10.000 CLP',
       icon: '🪒'
     },
     {
-      id: 'combo',
-      name: 'Combo Full',
-      description: 'Corte de pelo + arreglo de barba + lavado',
-      duration: 75,
-      price: null,
+      id: 'corte-barba',
+      name: 'Corte y barba',
+      description: '',
+      duration: 60,
+      price: '20.000 CLP',
       icon: '💈'
-    },
-    {
-      id: 'degrade',
-      name: 'Degradé / Fade',
-      description: 'Corte con degradado a máquina, acabado preciso',
-      duration: 45,
-      price: null,
-      icon: '⚡'
     }
   ]
 };
