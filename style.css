@@ -929,9 +929,14 @@ body.demo-mode { padding-top: 38px; }
   font-size: 1.3rem;
   font-weight: 600;
   font-family: var(--font-mono);
+  line-height: 1;
   cursor: pointer;
   transition: all var(--transition);
-  display: flex; align-items: center; justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0;
 }
 .pin-key:hover:not(:disabled) { background: var(--bg-glass); border-color: var(--border-hover); }
 .pin-key:active:not(:disabled) { transform: scale(0.94); }
