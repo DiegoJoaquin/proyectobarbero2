@@ -19,7 +19,7 @@ const CONFIG = {
   // Conseguís estos valores en: supabase.com → tu proyecto → Settings → API
   supabase: {
     url: 'https://dpenxscxmeecaeywtxdz.supabase.co',        // ← pegar aquí la URL del proyecto
-    anonKey: 'TeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRwZW54c2N4bWVlY2FleXd0eGR6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE2NTQ5MTMsImV4cCI6MjA5NzIzMDkxM30._D2UiqiZeVuaR3GhGMfmz5bWdy8umaP6ugx3KlX20-w'   // ← pegar aquí la anon/public key
+    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRwZW54c2N4bWVlY2FleXd0eGR6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE2NTQ5MTMsImV4cCI6MjA5NzIzMDkxM30._D2UiqiZeVuaR3GhGMfmz5bWdy8umaP6ugx3KlX20-w'   // ← pegar aquí la anon/public key
   },
 
   // ─── DATOS DEL NEGOCIO ───────────────────────────────────
