@@ -81,7 +81,18 @@ function applyBusinessInfo() {
   set('business-name',      b.name);
   set('business-tagline',   b.tagline);
   set('business-address',   b.address);
-  set('business-instagram', b.instagram);
+  
+  const ig = el('business-instagram');
+  if (ig) {
+    let igUrl = b.instagram;
+    if (!igUrl.startsWith('http')) {
+      igUrl = `https://www.instagram.com/${igUrl.replace('@', '')}/`;
+    }
+    const handle = '@' + igUrl.split('instagram.com/')[1].replace(/\//g, '');
+    ig.textContent = handle;
+    ig.href = igUrl;
+  }
+
   const phone = el('business-phone');
   if (phone) { phone.textContent = b.phone; phone.href = `tel:${b.phone.replace(/\s/g, '')}`; }
   document.title = `${b.name} — Reservá tu turno`;

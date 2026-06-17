@@ -28,7 +28,7 @@ const CONFIG = {
     tagline: 'Juanfade',
     address: 'Irarrazaval 3054, Local 105B',
     phone: '+54 9 11 0000-0000',
-    instagram: '@bladeandco'
+    instagram: 'https://www.instagram.com/juanfade/'
   },
 
   // ─── SEGURIDAD ───────────────────────────────────────────
