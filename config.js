@@ -24,8 +24,8 @@ const CONFIG = {
 
   // ─── DATOS DEL NEGOCIO ───────────────────────────────────
   business: {
-    name: 'Eminence Barber',
-    tagline: 'Juanfade',
+    name: 'Juanfade',
+    tagline: 'Eminence Barber',
     address: 'Irarrazaval 3054, Local 105B',
     phone: '+54 9 11 0000-0000',
     instagram: 'https://www.instagram.com/juanfade/'
