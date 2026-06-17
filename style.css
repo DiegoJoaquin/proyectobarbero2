@@ -1207,19 +1207,7 @@ body.demo-mode { padding-top: 38px; }
 .fab-container.open .fab-secondary:nth-child(1) { transition-delay: 0.05s; }
 .fab-container.open .fab-secondary:nth-child(2) { transition-delay: 0.1s; }
 
-/* ── Logout ───────────────────────────────────────────────── */
-.logout-btn {
-  width: 34px; height: 34px;
-  border-radius: var(--radius-sm);
-  background: transparent;
-  border: 1px solid var(--border);
-  color: var(--text-muted);
-  font-size: 0.9rem;
-  cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  transition: all var(--transition);
-}
-.logout-btn:hover { border-color: rgba(239,68,68,0.4); color: var(--error); background: rgba(239,68,68,0.08); }
+/* ── Logout Button styles handled above ── */
 
 /* ── Divisor de sección ───────────────────────────────────── */
 .section-divider {
@@ -1522,23 +1510,7 @@ a.phone-link:hover { text-decoration: underline; }
   color: var(--accent-light);
 }
 
-/* Logout rediseñado */
-.logout-btn {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  padding: 7px 14px;
-  border-radius: var(--radius-full);
-  background: transparent;
-  border: 1px solid var(--border);
-  color: var(--text-muted);
-  font-size: 0.78rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all var(--transition);
-  white-space: nowrap;
-}
-.logout-btn:hover { border-color: rgba(239,68,68,0.4); color: var(--error); background: rgba(239,68,68,0.08); }
+/* Logout styles handled above */
 
 /* Responsive agenda */
 @media (max-width: 380px) {
