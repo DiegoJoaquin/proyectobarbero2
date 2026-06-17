@@ -912,38 +912,39 @@ body.demo-mode { padding-top: 38px; }
   position: relative;
   z-index: 1;
   width: 100%;
+  max-width: 340px;
+  margin: 0 auto;
+  padding: 0 16px;
 }
 
 .pin-keypad {
   display: grid;
-  grid-template-columns: repeat(3, 80px);
+  grid-template-columns: repeat(3, 1fr);
   gap: 12px;
-  margin: 0 auto;
+  width: 100%;
 }
 .pin-key {
-  width: 80px;
-  height: 70px;
+  width: 100%;
+  height: 76px;
   border-radius: var(--radius-md);
   background: var(--bg-card);
   border: 1px solid var(--border);
   color: var(--text-primary);
-  font-size: 1.4rem;
-  font-weight: 600;
+  font-size: 1.5rem;
+  font-weight: 700;
   font-family: var(--font-mono);
   cursor: pointer;
   transition: all var(--transition);
-  /* Centrado: en divs el flex funciona perfectamente en todos los browsers */
   display: flex;
   align-items: center;
   justify-content: center;
-  text-align: center;
   user-select: none;
   -webkit-user-select: none;
   -webkit-tap-highlight-color: transparent;
 }
 .pin-key:hover { background: var(--bg-glass); border-color: var(--border-hover); }
 .pin-key:active { transform: scale(0.94); }
-.pin-key.del { color: var(--text-secondary); font-size: 1.1rem; }
+.pin-key.del { color: var(--text-secondary); font-size: 1.2rem; }
 
 /* ── Dashboard ────────────────────────────────────────────── */
 .admin-layout {
