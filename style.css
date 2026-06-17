@@ -444,6 +444,21 @@ body.demo-mode { padding-top: 38px; }
   animation: fadeDown 0.6s ease both;
 }
 
+.hero-logo-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 24px;
+  animation: fadeDown 0.6s ease both;
+}
+
+.hero-logo {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--accent);
+  box-shadow: var(--shadow-glow);
+}
 .hero-name {
   font-size: clamp(3rem, 13vw, 5.5rem);
   font-weight: 700;
