@@ -1258,8 +1258,8 @@ body.demo-mode { padding-top: 38px; }
    RESPONSIVO
    ================================================================ */
 @media (max-width: 380px) {
-  .pin-keypad { grid-template-columns: repeat(3, 64px); gap: 8px; }
-  .pin-key    { width: 64px; height: 58px; font-size: 1.1rem; }
+  /* PIN: mantener 1fr, solo ajustar altura */
+  .pin-key    { height: 64px; font-size: 1.2rem; }
   .stats-bar  { gap: 7px; }
   .stat-number { font-size: 1.5rem; }
 }
@@ -1501,23 +1501,25 @@ a.phone-link:hover { text-decoration: underline; }
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 12px;
+  padding: 10px 14px;
   border-radius: var(--radius-md);
-  border: 1px dashed rgba(255,255,255,0.07);
-  color: var(--text-muted);
-  font-size: 0.8rem;
+  border: 1px dashed rgba(255,255,255,0.15);
+  color: var(--text-secondary);
+  font-size: 0.82rem;
   cursor: pointer;
   transition: all var(--transition);
   margin: 2px 0;
+  background: rgba(255,255,255,0.02);
 }
 .agenda-free:hover {
-  border-color: rgba(124,58,237,0.35);
+  border-color: rgba(124,58,237,0.45);
   color: var(--accent-light);
-  background: rgba(124,58,237,0.05);
+  background: rgba(124,58,237,0.07);
 }
 .agenda-free .plus-icon {
-  font-size: 0.9rem;
-  opacity: 0.6;
+  font-size: 1rem;
+  opacity: 0.8;
+  color: var(--accent-light);
 }
 
 /* Logout rediseñado */
@@ -1540,8 +1542,8 @@ a.phone-link:hover { text-decoration: underline; }
 
 /* Responsive agenda */
 @media (max-width: 380px) {
-  .pin-keypad { grid-template-columns: repeat(3, 64px); gap: 8px; }
-  .pin-key    { width: 64px; height: 58px; font-size: 1.1rem; }
+  /* PIN: mantener 1fr, solo ajustar altura */
+  .pin-key    { height: 64px; font-size: 1.2rem; }
   .stats-bar  { gap: 7px; }
   .stat-number { font-size: 1.5rem; }
   .agenda-line { left: 72px; }
