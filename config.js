@@ -33,9 +33,9 @@ const CONFIG = {
 
   // ─── SEGURIDAD ───────────────────────────────────────────
   // ¡Alta Seguridad! El PIN está encriptado con SHA-256. Nadie puede ver tu contraseña aquí.
-  // El PIN por defecto sigue siendo 1234. Si quieres cambiarlo, avísame.
+  // El PIN actual es: 2011. Si quieres cambiarlo, avísame.
   security: {
-    pinHash: '03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4' // Hash de '1234'
+    pinHash: '72d1b5da6eeaf1789df86487da50ad5e9dadb5ffaecb56b6de592aa286c9c1b8' // Hash de '2011'
   },
 
   // ─── HORARIOS DE TRABAJO ─────────────────────────────────
