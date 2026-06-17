@@ -109,15 +109,42 @@ function updatePinDots() {
   });
 }
 
-function checkPin() {
-  if (String(pinBuffer) === String(CONFIG.adminPin)) {
+async function hashString(str) {
+  const msgBuffer = new TextEncoder().encode(str);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+async function checkPin() {
+  const lockTime = parseInt(localStorage.getItem('blade_lock_time') || '0');
+  if (Date.now() < lockTime) {
+    const remaining = Math.ceil((lockTime - Date.now()) / 60000);
+    showToast(`Bloqueado por seguridad. Intenta en ${remaining} min.`, 'error');
+    pinBuffer = '';
+    updatePinDots();
+    return;
+  }
+
+  const hashedInput = await hashString(pinBuffer);
+  if (hashedInput === CONFIG.security.pinHash) {
+    localStorage.setItem('blade_failed_attempts', '0');
     sessionStorage.setItem('blade_admin_auth','1');
     showDashboard();
   } else {
+    let attempts = parseInt(localStorage.getItem('blade_failed_attempts') || '0') + 1;
+    localStorage.setItem('blade_failed_attempts', attempts);
+    
     [1,2,3,4].forEach(i => { const d=el(`dot-${i}`); if(d) d.classList.add('error'); });
     pinBuffer = '';
     setTimeout(updatePinDots, 600);
-    showToast('PIN incorrecto. Intentá de nuevo.','error');
+    
+    if (attempts >= 5) {
+      localStorage.setItem('blade_lock_time', Date.now() + 5 * 60 * 1000);
+      showToast('Bloqueo por seguridad (5 minutos).', 'error');
+    } else {
+      showToast(`PIN incorrecto. Quedan ${5 - attempts} intentos.`, 'error');
+    }
   }
 }
 

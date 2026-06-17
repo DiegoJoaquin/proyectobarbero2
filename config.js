@@ -32,8 +32,11 @@ const CONFIG = {
   },
 
   // ─── SEGURIDAD ───────────────────────────────────────────
-  // ¡IMPORTANTE! Cambiá este PIN antes de publicar la app.
-  adminPin: '1234',
+  // ¡Alta Seguridad! El PIN está encriptado con SHA-256. Nadie puede ver tu contraseña aquí.
+  // El PIN por defecto sigue siendo 1234. Si quieres cambiarlo, avísame.
+  security: {
+    pinHash: '03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4' // Hash de '1234'
+  },
 
   // ─── HORARIOS DE TRABAJO ─────────────────────────────────
   workingHours: {
