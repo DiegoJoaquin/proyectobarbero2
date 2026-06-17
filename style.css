@@ -1,13 +1,13 @@
-/* ============================================================
-   BLADE & CO. — style.css
+﻿/* ============================================================
+   BLADE & CO. â€” style.css
    Estilo: Neon Oscuro + Glassmorphism
    Fuente: Space Grotesk (Google Fonts)
    ============================================================ */
 
-/* ── Google Fonts ─────────────────────────────────────────── */
+/* â”€â”€ Google Fonts â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
 
-/* ── Variables de diseño ──────────────────────────────────── */
+/* â”€â”€ Variables de diseÃ±o â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 :root {
   /* Paleta: Elegante Tinto (Rojo Vino) */
   --bg-primary:   #0A0A0C;
@@ -32,7 +32,7 @@
   --error:   #EF4444;
   --warning: #F59E0B;
 
-  /* Tipografía */
+  /* TipografÃ­a */
   --font-body: 'Space Grotesk', system-ui, sans-serif;
   --font-mono: 'Space Mono', monospace;
 
@@ -52,7 +52,7 @@
   --transition: 0.22s cubic-bezier(0.4,0,0.2,1);
 }
 
-/* ── Reset ────────────────────────────────────────────────── */
+/* â”€â”€ Reset â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 html { scroll-behavior: smooth; }
@@ -67,12 +67,12 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* ── Scrollbar personalizado ──────────────────────────────── */
+/* â”€â”€ Scrollbar personalizado â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
 
-/* ── Utilidades ───────────────────────────────────────────── */
+/* â”€â”€ Utilidades â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .visually-hidden {
   position: absolute; width:1px; height:1px;
   padding:0; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap;
@@ -82,7 +82,7 @@ body {
    COMPONENTES GLOBALES
    ================================================================ */
 
-/* ── Banner de modo demo ──────────────────────────────────── */
+/* â”€â”€ Banner de modo demo â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 #demo-banner {
   position: fixed;
   top: 0; left: 0; right: 0;
@@ -99,7 +99,7 @@ body {
 #demo-banner.visible { display: block; }
 body.demo-mode { padding-top: 38px; }
 
-/* ── Toasts ───────────────────────────────────────────────── */
+/* â”€â”€ Toasts â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 #toast-container {
   position: fixed;
   bottom: 24px; right: 16px;
@@ -130,9 +130,9 @@ body.demo-mode { padding-top: 38px; }
 .toast.info    { border-color: var(--border-hover); }
 
 .toast-icon { font-size: 1.1rem; flex-shrink: 0; }
-.toast.success .toast-icon::before { content: '✓'; color: var(--success); }
-.toast.error   .toast-icon::before { content: '✕'; color: var(--error); }
-.toast.info    .toast-icon::before { content: 'ℹ'; color: var(--accent-light); }
+.toast.success .toast-icon::before { content: 'âœ“'; color: var(--success); }
+.toast.error   .toast-icon::before { content: 'âœ•'; color: var(--error); }
+.toast.info    .toast-icon::before { content: 'â„¹'; color: var(--accent-light); }
 
 .toast.removing {
   animation: toastOut 0.25s ease forwards;
@@ -147,7 +147,7 @@ body.demo-mode { padding-top: 38px; }
   to   { opacity:0; transform: translateX(100%); }
 }
 
-/* ── Overlay de modal ─────────────────────────────────────── */
+/* â”€â”€ Overlay de modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -166,12 +166,12 @@ body.demo-mode { padding-top: 38px; }
   visibility: visible;
 }
 
-/* En pantallas más grandes, centrar verticalmente */
+/* En pantallas mÃ¡s grandes, centrar verticalmente */
 @media (min-width: 640px) {
   .modal-overlay { align-items: center; }
 }
 
-/* ── Panel de modal ───────────────────────────────────────── */
+/* â”€â”€ Panel de modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .modal-panel {
   background: var(--bg-secondary);
   border: 1px solid var(--border);
@@ -232,7 +232,7 @@ body.demo-mode { padding-top: 38px; }
   color: var(--error);
 }
 
-/* ── Botones ──────────────────────────────────────────────── */
+/* â”€â”€ Botones â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -299,7 +299,7 @@ body.demo-mode { padding-top: 38px; }
 .btn-lg { font-size: 1.05rem; padding: 16px 32px; }
 .btn-full { width: 100%; }
 
-/* ── Inputs ───────────────────────────────────────────────── */
+/* â”€â”€ Inputs â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .form-group {
   display: flex;
   flex-direction: column;
@@ -339,7 +339,7 @@ body.demo-mode { padding-top: 38px; }
 .form-select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238B8BA7' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 40px; cursor: pointer; }
 .form-textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
 
-/* ── Spinner de carga ─────────────────────────────────────── */
+/* â”€â”€ Spinner de carga â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .spinner {
   width: 22px; height: 22px;
   border: 2.5px solid rgba(255,255,255,0.15);
@@ -350,7 +350,7 @@ body.demo-mode { padding-top: 38px; }
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ── Chips de horario ─────────────────────────────────────── */
+/* â”€â”€ Chips de horario â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .slot-chip {
   padding: 9px 14px;
   border-radius: var(--radius-md);
@@ -382,10 +382,10 @@ body.demo-mode { padding-top: 38px; }
 }
 
 /* ================================================================
-   INDEX.HTML — CLIENTE
+   INDEX.HTML â€” CLIENTE
    ================================================================ */
 
-/* ── Hero ─────────────────────────────────────────────────── */
+/* â”€â”€ Hero â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .hero {
   min-height: 100vh;
   display: flex;
@@ -410,7 +410,7 @@ body.demo-mode { padding-top: 38px; }
   pointer-events: none;
 }
 
-/* Patrón de puntos decorativo */
+/* PatrÃ³n de puntos decorativo */
 .hero::after {
   content: '';
   position: absolute;
@@ -475,7 +475,7 @@ body.demo-mode { padding-top: 38px; }
 
 .hero-tagline {
   font-size: 1rem;
-  color: var(--text-secondary);
+  color: var(--text-primary);
   margin-bottom: 36px;
   animation: fadeDown 0.7s 0.2s ease both;
   font-weight: 400;
@@ -499,7 +499,7 @@ body.demo-mode { padding-top: 38px; }
   align-items: center;
   gap: 7px;
   font-size: 0.82rem;
-  color: var(--text-muted);
+  color: var(--text-primary);
 }
 
 .hero-info-item span { font-size: 1rem; }
@@ -535,7 +535,7 @@ body.demo-mode { padding-top: 38px; }
   to   { opacity:1; transform: translateY(0); }
 }
 
-/* ── Sección de servicios (abajo del hero, scroll) ────────── */
+/* â”€â”€ SecciÃ³n de servicios (abajo del hero, scroll) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .services-preview {
   padding: 60px 22px;
   max-width: 860px;
@@ -564,7 +564,7 @@ body.demo-mode { padding-top: 38px; }
   gap: 14px;
 }
 
-/* ── Tarjeta de servicio ──────────────────────────────────── */
+/* â”€â”€ Tarjeta de servicio â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .service-card {
   background: var(--bg-card);
   border: 1px solid var(--border);
@@ -632,7 +632,7 @@ body.demo-mode { padding-top: 38px; }
 }
 .service-card.selected .service-check { opacity: 1; transform: scale(1); }
 
-/* ── Wizard — Barra de progreso ───────────────────────────── */
+/* â”€â”€ Wizard â€” Barra de progreso â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .wizard-progress {
   display: flex;
   align-items: center;
@@ -669,7 +669,7 @@ body.demo-mode { padding-top: 38px; }
   border-color: var(--success);
   color: #fff;
 }
-.wizard-step.done .wizard-step-num::after { content: '✓'; }
+.wizard-step.done .wizard-step-num::after { content: 'âœ“'; }
 .wizard-step:not(.done) .wizard-step-num::after { content: attr(data-n); }
 
 .wizard-line {
@@ -681,7 +681,7 @@ body.demo-mode { padding-top: 38px; }
 .wizard-step.done + .wizard-step .wizard-line,
 .wizard-line.done { background: var(--success); }
 
-/* ── Calendario personalizado ─────────────────────────────── */
+/* â”€â”€ Calendario personalizado â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .calendar {
   background: var(--bg-card);
   border: 1px solid var(--border);
@@ -766,7 +766,7 @@ body.demo-mode { padding-top: 38px; }
 .calendar-day.disabled { color: var(--text-muted); cursor: not-allowed; opacity: 0.4; }
 .calendar-day.empty { pointer-events: none; }
 
-/* ── Slots de horario ─────────────────────────────────────── */
+/* â”€â”€ Slots de horario â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .slots-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -775,7 +775,7 @@ body.demo-mode { padding-top: 38px; }
 }
 @media (min-width: 400px) { .slots-grid { grid-template-columns: repeat(4, 1fr); } }
 
-/* ── Resumen del turno (Paso 3) ───────────────────────────── */
+/* â”€â”€ Resumen del turno (Paso 3) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .booking-summary {
   background: var(--bg-card);
   border: 1px solid var(--border);
@@ -804,7 +804,7 @@ body.demo-mode { padding-top: 38px; }
 .booking-summary-row .label { color: var(--text-secondary); }
 .booking-summary-row .value { font-weight: 600; color: var(--text-primary); text-align: right; }
 
-/* ── Pantalla de éxito ────────────────────────────────────── */
+/* â”€â”€ Pantalla de Ã©xito â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .success-screen {
   text-align: center;
   padding: 20px 0;
@@ -844,10 +844,10 @@ body.demo-mode { padding-top: 38px; }
 .booking-code-value { font-family: var(--font-mono); font-size: 1.3rem; font-weight: 700; color: var(--accent-light); letter-spacing: 0.1em; }
 
 /* ================================================================
-   ADMIN.HTML — PANEL DEL BARBERO
+   ADMIN.HTML â€” PANEL DEL BARBERO
    ================================================================ */
 
-/* ── Login — PIN ──────────────────────────────────────────── */
+/* â”€â”€ Login â€” PIN â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .login-screen {
   min-height: 100vh;
   display: flex;
@@ -913,7 +913,7 @@ body.demo-mode { padding-top: 38px; }
   40%,80% { transform: translateX(5px); }
 }
 
-/* Teclado numérico — CENTRADO */
+/* Teclado numÃ©rico â€” CENTRADO */
 .login-inner {
   display: flex;
   flex-direction: column;
@@ -956,7 +956,7 @@ body.demo-mode { padding-top: 38px; }
 .pin-key:active { transform: scale(0.94); }
 .pin-key.del { color: var(--text-secondary); font-size: 1.2rem; }
 
-/* ── Dashboard ────────────────────────────────────────────── */
+/* â”€â”€ Dashboard â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .admin-layout {
   min-height: 100vh;
   padding-bottom: 100px; /* espacio para el FAB */
@@ -1058,7 +1058,7 @@ body.demo-mode { padding-top: 38px; }
 }
 .admin-today-btn:hover { background: rgba(128,0,32,0.25); }
 
-/* ── Estadísticas del día ─────────────────────────────────── */
+/* â”€â”€ EstadÃ­sticas del dÃ­a â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .stats-bar {
   display: grid;
   grid-template-columns: repeat(3,1fr);
@@ -1092,7 +1092,7 @@ body.demo-mode { padding-top: 38px; }
   color: var(--text-muted);
 }
 
-/* ── Timeline de turnos ───────────────────────────────────── */
+/* â”€â”€ Timeline de turnos â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .timeline {
   padding: 18px;
 }
@@ -1156,7 +1156,7 @@ body.demo-mode { padding-top: 38px; }
 .status-badge.completed  { background: rgba(16,185,129,0.15); color: var(--success); border: 1px solid rgba(16,185,129,0.3); }
 .status-badge.cancelled  { background: rgba(239,68,68,0.1); color: var(--error); border: 1px solid rgba(239,68,68,0.25); }
 
-/* ── Detalle del turno (modal admin) ──────────────────────── */
+/* â”€â”€ Detalle del turno (modal admin) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .appt-detail-header {
   background: var(--bg-card);
   border: 1px solid var(--border);
@@ -1168,7 +1168,7 @@ body.demo-mode { padding-top: 38px; }
 .appt-detail-meta { font-size: 0.85rem; color: var(--text-secondary); }
 .appt-detail-actions { display: flex; flex-direction: column; gap: 10px; }
 
-/* ── FAB ──────────────────────────────────────────────────── */
+/* â”€â”€ FAB â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .fab-container {
   position: fixed;
   bottom: 24px;
@@ -1217,9 +1217,9 @@ body.demo-mode { padding-top: 38px; }
 .fab-container.open .fab-secondary:nth-child(1) { transition-delay: 0.05s; }
 .fab-container.open .fab-secondary:nth-child(2) { transition-delay: 0.1s; }
 
-/* ── Logout Button styles handled above ── */
+/* â”€â”€ Logout Button styles handled above â”€â”€ */
 
-/* ── Divisor de sección ───────────────────────────────────── */
+/* â”€â”€ Divisor de secciÃ³n â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .section-divider {
   display: flex;
   align-items: center;
@@ -1238,7 +1238,7 @@ body.demo-mode { padding-top: 38px; }
   background: var(--border);
 }
 
-/* ── Detalle del cliente en modal ─────────────────────────── */
+/* â”€â”€ Detalle del cliente en modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .detail-row {
   display: flex;
   gap: 10px;
@@ -1268,7 +1268,7 @@ body.demo-mode { padding-top: 38px; }
   .timeline     { padding: 20px 28px; }
 }
 
-/* ── Loading skeleton ─────────────────────────────────────── */
+/* â”€â”€ Loading skeleton â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .skeleton {
   background: linear-gradient(90deg, var(--bg-card) 25%, var(--bg-glass) 50%, var(--bg-card) 75%);
   background-size: 200% 100%;
@@ -1280,7 +1280,7 @@ body.demo-mode { padding-top: 38px; }
   to   { background-position: -200% 0; }
 }
 
-/* ── Bloqueo ──────────────────────────────────────────────── */
+/* â”€â”€ Bloqueo â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .block-badge {
   font-size: 0.7rem;
   padding: 3px 8px;
@@ -1292,7 +1292,7 @@ body.demo-mode { padding-top: 38px; }
   letter-spacing: 0.04em;
 }
 
-/* ── Nav pills pasos wizard ───────────────────────────────── */
+/* â”€â”€ Nav pills pasos wizard â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .step-label {
   font-size: 0.72rem;
   color: var(--text-muted);
@@ -1310,23 +1310,23 @@ body.demo-mode { padding-top: 38px; }
   margin-top: 24px;
 }
 
-/* ── Animación de aparición de lista ──────────────────────── */
+/* â”€â”€ AnimaciÃ³n de apariciÃ³n de lista â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 @keyframes fadeUp {
   from { opacity:0; transform:translateY(12px); }
   to   { opacity:1; transform:translateY(0); }
 }
 .animate-up { animation: fadeUp 0.3s ease both; }
 
-/* ── Teléfono como link ───────────────────────────────────── */
+/* â”€â”€ TelÃ©fono como link â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 a { color: inherit; }
-a.phone-link { color: var(--accent-cyan); text-decoration: none; }
+a.phone-link { color: var(--text-primary); text-decoration: none; }
 a.phone-link:hover { text-decoration: underline; }
 
 /* ================================================================
-   AGENDA — NUEVA VISTA DE TIMELINE
+   AGENDA â€” NUEVA VISTA DE TIMELINE
    ================================================================ */
 
-/* Sección de navegación de fecha */
+/* SecciÃ³n de navegaciÃ³n de fecha */
 .date-nav-section {
   display: flex;
   align-items: center;
@@ -1369,14 +1369,14 @@ a.phone-link:hover { text-decoration: underline; }
   max-width: 220px;
 }
 
-/* Botones nav — más grandes en la nueva sección */
+/* Botones nav â€” mÃ¡s grandes en la nueva secciÃ³n */
 .date-nav-section .admin-nav-btn {
   width: 38px; height: 38px;
   font-size: 1.2rem;
   border-radius: var(--radius-md);
 }
 
-/* Etiqueta "AGENDA DEL DÍA" */
+/* Etiqueta "AGENDA DEL DÃA" */
 .agenda-section-label {
   font-size: 0.68rem;
   font-weight: 700;
@@ -1392,7 +1392,7 @@ a.phone-link:hover { text-decoration: underline; }
   padding: 4px 18px 16px;
 }
 
-/* Línea vertical continua */
+/* LÃ­nea vertical continua */
 .agenda-line {
   position: absolute;
   left: 78px; /* = 18px pad + 50px time col + 10px gap */
