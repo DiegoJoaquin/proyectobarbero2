@@ -614,7 +614,7 @@ body.demo-mode { padding-top: 38px; }
   margin-top: 12px;
   font-size: 0.85rem;
   font-weight: 600;
-  color: var(--text-secondary);
+  color: var(--text-primary);
   font-family: var(--font-mono);
 }
 .service-check {
