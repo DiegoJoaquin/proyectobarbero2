@@ -32,6 +32,7 @@ let selectedDate   = todayISO();
 let selectedApptId = null;
 let realtimeChannel = null;
 let currentAppointments = [];
+let currentBlockedSlots  = [];
 
 // ── Toast (sin depender de domRefs) ───────────────────────
 function showToast(msg, type = 'info', ms = 3500) {
@@ -143,11 +144,17 @@ function logout() {
 
 // ── Navegación de fechas ───────────────────────────────────
 function renderDateLabel() {
-  const lbl = el('current-date-label');
+  const lbl   = el('current-date-label');
+  const badge = el('today-badge');
   if (!lbl) return;
   const d = new Date(selectedDate+'T00:00:00');
   const s = d.toLocaleDateString('es-AR',{weekday:'long',day:'numeric',month:'long'});
   lbl.textContent = s.charAt(0).toUpperCase()+s.slice(1);
+  const isToday = selectedDate === todayISO();
+  if (badge) badge.style.display = isToday ? 'inline-flex' : 'none';
+  // Botón "Ir a hoy" solo se muestra si no es hoy
+  const todayBtn = el('btn-today');
+  if (todayBtn) todayBtn.style.visibility = isToday ? 'hidden' : 'visible';
 }
 
 function changeDate(delta) {
@@ -160,76 +167,147 @@ function changeDate(delta) {
 
 // ── Carga de datos ─────────────────────────────────────────
 async function loadDayData() {
-  const loadEl   = el('timeline-loading');
+  const loadEl    = el('timeline-loading');
   const contentEl = el('timeline-content');
-  if (loadEl)   loadEl.style.display = 'block';
-  if (contentEl) contentEl.innerHTML = '';
+  if (loadEl)    loadEl.style.display = 'block';
+  if (contentEl) contentEl.innerHTML  = '';
 
   let appointments = [];
+  let blockedSlots  = [];
 
   if (DEMO_MODE || !_supabase) {
     appointments = getLocalAppointments()
       .filter(a => a.appointment_date === selectedDate)
       .sort((a,b) => a.appointment_time.localeCompare(b.appointment_time));
+    blockedSlots = getLocalBlockedSlots().filter(b => b.slot_date === selectedDate);
   } else {
     try {
-      const { data, error } = await _supabase
-        .from('appointments').select('*')
-        .eq('appointment_date', selectedDate)
-        .order('appointment_time', { ascending: true });
-      if (error) throw error;
-      appointments = data || [];
+      const [apptRes, blockRes] = await Promise.all([
+        _supabase.from('appointments').select('*').eq('appointment_date', selectedDate).order('appointment_time',{ascending:true}),
+        _supabase.from('blocked_slots').select('*').eq('slot_date', selectedDate)
+      ]);
+      if (apptRes.error) throw apptRes.error;
+      appointments = apptRes.data || [];
+      blockedSlots  = blockRes.data  || [];
     } catch (err) {
-      console.error('Error cargando turnos, usando local:', err);
+      console.error('Error Supabase, usando local:', err);
       appointments = getLocalAppointments()
         .filter(a => a.appointment_date === selectedDate)
         .sort((a,b) => a.appointment_time.localeCompare(b.appointment_time));
+      blockedSlots = getLocalBlockedSlots().filter(b => b.slot_date === selectedDate);
     }
   }
 
   if (loadEl) loadEl.style.display = 'none';
   currentAppointments = appointments;
-  renderTimeline(appointments);
+  currentBlockedSlots  = blockedSlots;
+  renderAgenda(appointments, blockedSlots);
   updateStats(appointments);
 }
 
-// ── Timeline ───────────────────────────────────────────────
-function renderTimeline(appts) {
+// ── Agenda ─────────────────────────────────────────────────
+function renderAgenda(appts, blockedSlots) {
   const contentEl = el('timeline-content');
   if (!contentEl) return;
 
-  if (!appts.length) {
-    contentEl.innerHTML = `
-      <div class="timeline-empty">
-        <span class="timeline-empty-icon" aria-hidden="true">📭</span>
-        <p class="timeline-empty-text">Sin turnos para este día.</p>
-      </div>`;
+  const allSlots = generateAllSlots(selectedDate);
+
+  if (!allSlots.length) {
+    contentEl.innerHTML = `<div class="timeline-empty"><span class="timeline-empty-icon">📭</span><p class="timeline-empty-text">Sin horarios configurados para este día.</p></div>`;
     return;
   }
 
+  const now     = new Date();
+  const nowStr  = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+  const isToday = selectedDate === todayISO();
+
   const statusLabels = { pending:'Pendiente', confirmed:'Confirmado', completed:'Completado', cancelled:'Cancelado' };
 
-  contentEl.innerHTML = appts.map(a => {
-    const time  = a.appointment_time?.substring(0,5) ?? '--:--';
-    const label = statusLabels[a.status] || a.status;
-    return `
-      <div class="appointment-card animate-up" data-appt-id="${a.id}"
-        role="button" tabindex="0"
-        aria-label="Turno de ${escHtml(a.client_name)} a las ${time}, ${label}">
-        <div class="appt-time">${time}</div>
-        <div class="appt-body">
-          <div class="appt-name">${escHtml(a.client_name)}</div>
-          <div class="appt-service">${escHtml(a.service)}</div>
-        </div>
-        <div class="status-badge ${a.status}">${label}</div>
-      </div>`;
-  }).join('');
+  const isBlocked = t => (blockedSlots||[]).some(b => t >= b.start_time.substring(0,5) && t < b.end_time.substring(0,5));
+  const getBlock  = t => (blockedSlots||[]).find(b => t >= b.start_time.substring(0,5) && t < b.end_time.substring(0,5));
 
-  qsa('.appointment-card', contentEl).forEach(card => {
+  let html = '<div class="agenda-wrap">';
+  html    += '<div class="agenda-line" aria-hidden="true"></div>';
+
+  for (const time of allSlots) {
+    const appt    = appts.find(a => a.appointment_time?.substring(0,5) === time);
+    const blocked = isBlocked(time);
+    const isPast  = isToday && time < nowStr;
+
+    let dotCls = 'agenda-dot';
+    if (appt)    dotCls += ' booked';
+    else if (blocked) dotCls += ' blocked';
+    if (isPast)  dotCls += ' past';
+
+    html += `<div class="agenda-row">`;
+    html += `<div class="agenda-time${isPast?' past':''}">${time}</div>`;
+    html += `<div class="${dotCls}" aria-hidden="true"></div>`;
+    html += '<div class="agenda-slot">';
+
+    if (appt) {
+      const label    = statusLabels[appt.status] || appt.status;
+      const cardCls  = ['agenda-appt-card', isPast?'past':'', appt.status].filter(Boolean).join(' ');
+      html += `
+        <div class="${cardCls}" data-appt-id="${appt.id}"
+          role="button" tabindex="0"
+          aria-label="Turno de ${escHtml(appt.client_name)}, ${label}">
+          <div>
+            <div class="appt-name">${escHtml(appt.client_name)}</div>
+            <div class="appt-service">${escHtml(appt.service)}</div>
+          </div>
+          <div class="status-badge ${appt.status}">${label}</div>
+        </div>`;
+    } else if (blocked) {
+      const block = getBlock(time);
+      html += `<div class="agenda-blocked"><span>🔒</span>${escHtml(block?.reason || 'Bloqueado')}</div>`;
+    } else {
+      html += `<div class="agenda-free" data-time="${time}" data-date="${selectedDate}"
+        role="button" tabindex="0" aria-label="Libre a las ${time}, toca para agregar">
+        <span class="plus-icon">+</span> Libre — toca para agregar
+      </div>`;
+    }
+
+    html += '</div></div>';
+  }
+
+  html += '</div>';
+  contentEl.innerHTML = html;
+
+  // Eventos en tarjetas de citas
+  qsa('.agenda-appt-card', contentEl).forEach(card => {
     const open = () => openApptDetail(card.dataset.apptId);
     card.addEventListener('click', open);
-    card.addEventListener('keydown', e => { if (e.key==='Enter'||e.key===' ') { e.preventDefault(); open(); } });
+    card.addEventListener('keydown', e => { if(e.key==='Enter'||e.key===' '){e.preventDefault();open();} });
   });
+
+  // Eventos en slots libres
+  qsa('.agenda-free', contentEl).forEach(slot => {
+    const open = () => openAddApptModalForSlot(slot.dataset.date, slot.dataset.time);
+    slot.addEventListener('click', open);
+    slot.addEventListener('keydown', e => { if(e.key==='Enter'||e.key===' '){e.preventDefault();open();} });
+  });
+
+  // Scroll suave al primer turno futuro si es hoy
+  if (isToday) {
+    const firstFuture = qsa('.agenda-row', contentEl).find(r => {
+      const t = r.querySelector('.agenda-time');
+      return t && t.textContent >= nowStr;
+    });
+    if (firstFuture) setTimeout(()=>firstFuture.scrollIntoView({behavior:'smooth',block:'center'}), 200);
+  }
+}
+
+/** Abre el modal de nuevo turno pre-relleno con fecha y hora */
+function openAddApptModalForSlot(date, time) {
+  closeFab();
+  const dateEl = el('add-date');
+  if (dateEl) { dateEl.value = date; dateEl.min = todayISO(); }
+  openModal('add-appt-modal');
+  loadAddTimeSlots(date).then(() => {
+    const sel = el('add-time-select');
+    if (sel) sel.value = time;
+  });
+  el('add-name')?.focus();
 }
 
 function updateStats(appts) {

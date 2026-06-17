@@ -3,38 +3,30 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="description" content="Panel de administración — Blade & Co." />
+  <meta name="description" content="Panel de administración — Blade &amp; Co." />
   <meta name="theme-color" content="#07070F" />
   <meta name="robots" content="noindex, nofollow" />
-
   <title>Admin — Blade &amp; Co.</title>
-
-  <!-- PWA -->
   <link rel="manifest" href="manifest.json" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💈</text></svg>" />
-
-  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
-
-  <!-- Supabase CDN -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-
-  <!-- Estilos -->
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <!-- ── Banner modo demo ────────────────────────────────── -->
+  <!-- Banner modo demo -->
   <div id="demo-banner" role="status" aria-live="polite">
-    ⚠️ Modo demo — los datos se guardan solo en este dispositivo. Configurá Supabase en <strong>config.js</strong>
+    ⚠️ Modo demo — datos guardados en este dispositivo. Configurá Supabase en <strong>config.js</strong>
   </div>
 
-  <!-- ── Pantalla de login (PIN) ─────────────────────────── -->
+  <!-- ══════════════════════════════════════════
+       PANTALLA DE LOGIN — PIN
+       ══════════════════════════════════════════ -->
   <div id="login-screen" class="login-screen" aria-label="Panel de acceso">
-
-    <div style="text-align:center; position:relative; z-index:1; width:100%;">
+    <div class="login-inner">
       <div class="login-logo" id="admin-login-logo">Blade &amp; Co.</div>
       <p class="login-subtitle">Panel del barbero — ingresá tu PIN</p>
 
@@ -57,38 +49,28 @@
         <button class="pin-key" data-key="7" aria-label="7">7</button>
         <button class="pin-key" data-key="8" aria-label="8">8</button>
         <button class="pin-key" data-key="9" aria-label="9">9</button>
-        <button class="pin-key" data-key="clear" aria-label="Limpiar" style="font-size:0.8rem">CLR</button>
+        <button class="pin-key" data-key="clear" aria-label="Limpiar" style="font-size:0.75rem;letter-spacing:0">CLR</button>
         <button class="pin-key" data-key="0" aria-label="0">0</button>
         <button class="pin-key del" data-key="del" aria-label="Borrar">⌫</button>
       </div>
     </div>
   </div>
 
-  <!-- ================================================================
-       DASHBOARD (oculto hasta hacer login)
-       ================================================================ -->
+  <!-- ══════════════════════════════════════════
+       DASHBOARD
+       ══════════════════════════════════════════ -->
   <div id="admin-dashboard" class="admin-layout" style="display:none" aria-label="Panel de administración">
 
-    <!-- ── Topbar ───────────────────────────────────────── -->
+    <!-- Topbar simplificado: solo logo + logout -->
     <header class="admin-topbar" role="banner">
-      <div class="admin-logo">Blade &amp; Co.</div>
-
-      <div class="admin-date-nav" role="navigation" aria-label="Navegación de fechas">
-        <button class="admin-nav-btn" id="btn-date-prev" aria-label="Día anterior">‹</button>
-        <span class="admin-date-label" id="current-date-label" aria-live="polite">–</span>
-        <button class="admin-nav-btn" id="btn-date-next" aria-label="Día siguiente">›</button>
-        <button class="admin-today-btn" id="btn-today" aria-label="Ir a hoy">Hoy</button>
-      </div>
-
-      <button class="logout-btn" id="btn-logout" aria-label="Cerrar sesión" title="Cerrar sesión">
-        🔓
-      </button>
+      <div class="admin-logo" id="admin-dash-logo">Blade &amp; Co.</div>
+      <button class="logout-btn" id="btn-logout" aria-label="Cerrar sesión" title="Cerrar sesión">🔓 Salir</button>
     </header>
 
-    <!-- ── Estadísticas ─────────────────────────────────── -->
+    <!-- Estadísticas -->
     <section class="stats-bar" aria-label="Estadísticas del día">
       <div class="stat-card">
-        <div class="stat-number total" id="stat-total">0</div>
+        <div class="stat-number total"   id="stat-total">0</div>
         <div class="stat-label">Total</div>
       </div>
       <div class="stat-card">
@@ -96,13 +78,25 @@
         <div class="stat-label">Pendientes</div>
       </div>
       <div class="stat-card">
-        <div class="stat-number done" id="stat-done">0</div>
-        <div class="stat-label">Completados</div>
+        <div class="stat-number done"    id="stat-done">0</div>
+        <div class="stat-label">Hechos</div>
       </div>
     </section>
 
-    <!-- ── Timeline de turnos ───────────────────────────── -->
-    <section class="timeline" aria-label="Turnos del día" aria-live="polite">
+    <!-- Navegación de fecha — centrada y prominente -->
+    <div class="date-nav-section" role="navigation" aria-label="Navegación de fechas">
+      <button class="admin-nav-btn" id="btn-date-prev" aria-label="Día anterior">‹</button>
+      <div class="date-nav-center">
+        <div class="date-nav-today-badge" id="today-badge" style="display:none">HOY</div>
+        <div class="date-nav-label" id="current-date-label" aria-live="polite">–</div>
+        <button class="admin-today-btn" id="btn-today" aria-label="Ir a hoy">Ir a hoy</button>
+      </div>
+      <button class="admin-nav-btn" id="btn-date-next" aria-label="Día siguiente">›</button>
+    </div>
+
+    <!-- Agenda del día -->
+    <section class="timeline" aria-label="Agenda del día" aria-live="polite">
+      <p class="agenda-section-label">AGENDA DEL DÍA</p>
       <div id="timeline-loading" style="text-align:center; padding:32px 0;">
         <div class="spinner" aria-label="Cargando turnos"></div>
       </div>
@@ -113,46 +107,30 @@
 
   </div><!-- /admin-dashboard -->
 
-  <!-- ================================================================
+  <!-- ══════════════════════════════════════════
        MODAL — DETALLE DEL TURNO
-       ================================================================ -->
-  <div
-    id="appt-detail-modal"
-    class="modal-overlay"
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="appt-detail-title"
-  >
+       ══════════════════════════════════════════ -->
+  <div id="appt-detail-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="appt-detail-title">
     <div class="modal-panel">
       <div class="modal-drag-handle" aria-hidden="true"></div>
       <div class="modal-header">
         <h2 class="modal-title" id="appt-detail-title">Detalle del turno</h2>
         <button class="modal-close" id="btn-close-appt-detail" aria-label="Cerrar">✕</button>
       </div>
-
-      <div id="appt-detail-body">
-        <!-- Generado por admin.js -->
-      </div>
+      <div id="appt-detail-body"></div>
     </div>
   </div>
 
-  <!-- ================================================================
-       MODAL — AGREGAR TURNO MANUAL
-       ================================================================ -->
-  <div
-    id="add-appt-modal"
-    class="modal-overlay"
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="add-appt-title"
-  >
+  <!-- ══════════════════════════════════════════
+       MODAL — AGREGAR TURNO
+       ══════════════════════════════════════════ -->
+  <div id="add-appt-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="add-appt-title">
     <div class="modal-panel">
       <div class="modal-drag-handle" aria-hidden="true"></div>
       <div class="modal-header">
         <h2 class="modal-title" id="add-appt-title">Nuevo turno</h2>
         <button class="modal-close" id="btn-close-add-appt" aria-label="Cerrar">✕</button>
       </div>
-
       <div class="form-group">
         <label class="form-label" for="add-name">Nombre del cliente *</label>
         <input class="form-input" type="text" id="add-name" placeholder="Nombre completo" autocomplete="off" />
@@ -163,9 +141,7 @@
       </div>
       <div class="form-group">
         <label class="form-label" for="add-service">Servicio *</label>
-        <select class="form-select" id="add-service">
-          <!-- Generado por admin.js -->
-        </select>
+        <select class="form-select" id="add-service"></select>
       </div>
       <div class="form-group">
         <label class="form-label" for="add-date">Fecha *</label>
@@ -181,36 +157,28 @@
         <label class="form-label" for="add-notes">Notas (opcional)</label>
         <textarea class="form-textarea" id="add-notes" placeholder="Notas adicionales..." rows="2"></textarea>
       </div>
-
-      <button class="btn btn-primary btn-full" id="btn-save-appt" aria-label="Guardar nuevo turno">
+      <button class="btn btn-primary btn-full" id="btn-save-appt">
         <span id="btn-save-appt-text">Guardar turno</span>
         <span id="btn-save-appt-spinner" class="spinner" style="display:none"></span>
       </button>
     </div>
   </div>
 
-  <!-- ================================================================
+  <!-- ══════════════════════════════════════════
        MODAL — BLOQUEAR HORARIOS
-       ================================================================ -->
-  <div
-    id="block-modal"
-    class="modal-overlay"
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="block-modal-title"
-  >
+       ══════════════════════════════════════════ -->
+  <div id="block-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="block-modal-title">
     <div class="modal-panel">
       <div class="modal-drag-handle" aria-hidden="true"></div>
       <div class="modal-header">
         <h2 class="modal-title" id="block-modal-title">Bloquear horario</h2>
         <button class="modal-close" id="btn-close-block" aria-label="Cerrar">✕</button>
       </div>
-
       <div class="form-group">
         <label class="form-label" for="block-date">Fecha *</label>
         <input class="form-input" type="date" id="block-date" />
       </div>
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
         <div class="form-group">
           <label class="form-label" for="block-start">Desde *</label>
           <input class="form-input" type="time" id="block-start" />
@@ -224,42 +192,23 @@
         <label class="form-label" for="block-reason">Motivo (opcional)</label>
         <input class="form-input" type="text" id="block-reason" placeholder="Ej: descanso, reunión..." />
       </div>
-
-      <button class="btn btn-primary btn-full" id="btn-save-block" aria-label="Confirmar bloqueo">
+      <button class="btn btn-primary btn-full" id="btn-save-block">
         <span id="btn-save-block-text">Bloquear horario</span>
         <span id="btn-save-block-spinner" class="spinner" style="display:none"></span>
       </button>
     </div>
   </div>
 
-  <!-- ── FAB (botón flotante) ─────────────────────────────── -->
+  <!-- FAB -->
   <div class="fab-container" id="fab-container" style="display:none">
-    <!-- Acciones secundarias (aparecen al abrir el FAB) -->
-    <button
-      class="fab fab-secondary"
-      id="fab-block"
-      aria-label="Bloquear horario"
-      title="Bloquear horario"
-    >🔒</button>
-    <button
-      class="fab fab-secondary"
-      id="fab-add"
-      aria-label="Agregar turno"
-      title="Agregar turno manual"
-    >📋</button>
-    <!-- FAB principal -->
-    <button
-      class="fab fab-primary"
-      id="fab-main"
-      aria-label="Opciones"
-      aria-expanded="false"
-    >+</button>
+    <button class="fab fab-secondary" id="fab-block" aria-label="Bloquear horario" title="Bloquear horario">🔒</button>
+    <button class="fab fab-secondary" id="fab-add"   aria-label="Agregar turno"    title="Agregar turno manual">📋</button>
+    <button class="fab fab-primary"   id="fab-main"  aria-label="Opciones" aria-expanded="false">+</button>
   </div>
 
-  <!-- ── Contenedor de toasts ──────────────────────────────── -->
+  <!-- Toasts -->
   <div id="toast-container" aria-live="polite" aria-atomic="false" role="status"></div>
 
-  <!-- Scripts -->
   <script src="config.js"></script>
   <script src="admin.js"></script>
 </body>

@@ -903,11 +903,22 @@ body.demo-mode { padding-top: 38px; }
   40%,80% { transform: translateX(5px); }
 }
 
-/* Teclado numérico */
+/* Teclado numérico — CENTRADO */
+.login-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+}
+
 .pin-keypad {
   display: grid;
   grid-template-columns: repeat(3, 72px);
   gap: 10px;
+  margin: 0 auto; /* centrado clave */
 }
 .pin-key {
   width: 72px; height: 64px;
@@ -1279,3 +1290,238 @@ body.demo-mode { padding-top: 38px; }
 a { color: inherit; }
 a.phone-link { color: var(--accent-cyan); text-decoration: none; }
 a.phone-link:hover { text-decoration: underline; }
+
+/* ================================================================
+   AGENDA — NUEVA VISTA DE TIMELINE
+   ================================================================ */
+
+/* Sección de navegación de fecha */
+.date-nav-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 18px 18px 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.date-nav-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+}
+
+.date-nav-today-badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent-light);
+  background: rgba(124,58,237,0.15);
+  border: 1px solid rgba(124,58,237,0.3);
+  padding: 2px 10px;
+  border-radius: var(--radius-full);
+}
+
+.date-nav-label {
+  font-size: clamp(0.95rem, 4vw, 1.15rem);
+  font-weight: 700;
+  color: var(--text-primary);
+  text-align: center;
+  text-transform: capitalize;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 220px;
+}
+
+/* Botones nav — más grandes en la nueva sección */
+.date-nav-section .admin-nav-btn {
+  width: 38px; height: 38px;
+  font-size: 1.2rem;
+  border-radius: var(--radius-md);
+}
+
+/* Etiqueta "AGENDA DEL DÍA" */
+.agenda-section-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 12px 18px 4px;
+}
+
+/* Contenedor principal de la agenda */
+.agenda-wrap {
+  position: relative;
+  padding: 4px 18px 16px;
+}
+
+/* Línea vertical continua */
+.agenda-line {
+  position: absolute;
+  left: 78px; /* = 18px pad + 50px time col + 10px gap */
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--border);
+  pointer-events: none;
+}
+
+/* Cada fila de la agenda */
+.agenda-row {
+  display: grid;
+  grid-template-columns: 50px 8px 1fr;
+  gap: 0 12px;
+  align-items: flex-start;
+  min-height: 52px;
+  padding: 5px 0;
+}
+
+/* Hora */
+.agenda-time {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  padding-top: 8px;
+  text-align: right;
+  letter-spacing: -0.02em;
+}
+.agenda-time.past { color: var(--text-muted); opacity: 0.55; }
+
+/* Punto del timeline */
+.agenda-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--border);
+  border: 2px solid var(--bg-primary);
+  margin-top: 10px;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+  transition: all var(--transition);
+}
+.agenda-dot.booked  {
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent-glow);
+  width: 10px; height: 10px;
+  margin-top: 9px;
+}
+.agenda-dot.blocked { background: var(--error); }
+.agenda-dot.past    { opacity: 0.4; }
+
+/* Tarjeta dentro de la agenda (turnos ocupados) */
+.agenda-appt-card {
+  background: rgba(124,58,237,0.1);
+  border: 1px solid rgba(124,58,237,0.25);
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: all var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 2px 0;
+}
+.agenda-appt-card:hover {
+  background: rgba(124,58,237,0.18);
+  border-color: rgba(124,58,237,0.45);
+  transform: translateX(2px);
+}
+.agenda-appt-card.past {
+  border-color: var(--border);
+  background: var(--bg-card);
+  opacity: 0.65;
+}
+.agenda-appt-card.cancelled {
+  opacity: 0.4;
+  text-decoration: line-through;
+}
+.agenda-appt-card.completed {
+  border-color: rgba(16,185,129,0.25);
+  background: rgba(16,185,129,0.07);
+}
+
+/* Horario bloqueado */
+.agenda-blocked {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
+  background: rgba(239,68,68,0.07);
+  border: 1px dashed rgba(239,68,68,0.3);
+  color: var(--error);
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin: 2px 0;
+}
+
+/* Slot libre */
+.agenda-free {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
+  border: 1px dashed rgba(255,255,255,0.07);
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all var(--transition);
+  margin: 2px 0;
+}
+.agenda-free:hover {
+  border-color: rgba(124,58,237,0.35);
+  color: var(--accent-light);
+  background: rgba(124,58,237,0.05);
+}
+.agenda-free .plus-icon {
+  font-size: 0.9rem;
+  opacity: 0.6;
+}
+
+/* Logout rediseñado */
+.logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 14px;
+  border-radius: var(--radius-full);
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition);
+  white-space: nowrap;
+}
+.logout-btn:hover { border-color: rgba(239,68,68,0.4); color: var(--error); background: rgba(239,68,68,0.08); }
+
+/* Responsive agenda */
+@media (max-width: 380px) {
+  .pin-keypad { grid-template-columns: repeat(3, 64px); gap: 8px; }
+  .pin-key    { width: 64px; height: 58px; font-size: 1.1rem; }
+  .stats-bar  { gap: 7px; }
+  .stat-number { font-size: 1.5rem; }
+  .agenda-line { left: 72px; }
+  .agenda-row  { grid-template-columns: 44px 8px 1fr; }
+}
+
+@media (min-width: 640px) {
+  .admin-topbar      { padding: 14px 28px; }
+  .stats-bar         { padding: 16px 28px; }
+  .timeline          { padding: 4px 28px 20px; }
+  .agenda-wrap       { padding: 4px 28px 20px; }
+  .agenda-line       { left: 94px; }
+  .date-nav-section  { padding: 20px 28px 14px; }
+  .agenda-section-label { padding: 12px 28px 4px; }
+}
+
