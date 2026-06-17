@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content="Reservá tu turno online en Blade & Co. — Barbería premium. Cortes modernos y clásicos." />
+  <meta name="theme-color" content="#07070F" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Blade &amp; Co." />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Blade &amp; Co. — Barbería" />
+  <meta property="og:description" content="Reservá tu turno online fácil y rápido." />
+  <meta property="og:type" content="website" />
+
+  <title>Blade &amp; Co. — Reservá tu turno</title>
+
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.json" />
+
+  <!-- Favicon (emoji como SVG) -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💈</text></svg>" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+
+  <!-- Estilos -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ── Banner modo demo ────────────────────────────────── -->
+  <div id="demo-banner" role="status" aria-live="polite">
+    ⚠️ Modo demo — los datos se guardan solo en este dispositivo. Configurá Supabase en <strong>config.js</strong>
+  </div>
+
+  <!-- ── Hero ───────────────────────────────────────────── -->
+  <main>
+    <section class="hero" aria-label="Inicio">
+      <div class="hero-orb hero-orb-1" aria-hidden="true"></div>
+      <div class="hero-orb hero-orb-2" aria-hidden="true"></div>
+
+      <div class="hero-content">
+        <div class="hero-badge" aria-label="Barbería premium">
+          <span aria-hidden="true">💈</span>
+          Barbería Premium
+        </div>
+
+        <h1 class="hero-name" id="business-name">
+          Blade <span class="hero-ampersand">&amp;</span> Co.
+        </h1>
+
+        <p class="hero-tagline" id="business-tagline">
+          Cortes que hablan por sí solos
+        </p>
+
+        <div class="hero-cta">
+          <button
+            id="btn-open-booking"
+            class="btn btn-primary btn-lg"
+            aria-label="Reservar turno"
+          >
+            <span aria-hidden="true">📅</span>
+            Reservar turno
+          </button>
+        </div>
+
+        <div class="hero-info" aria-label="Información del negocio">
+          <div class="hero-info-item">
+            <span aria-hidden="true">📍</span>
+            <span id="business-address">Cargando...</span>
+          </div>
+          <div class="hero-info-item">
+            <span aria-hidden="true">📞</span>
+            <a id="business-phone" href="#" class="phone-link">–</a>
+          </div>
+          <div class="hero-info-item">
+            <span aria-hidden="true">📸</span>
+            <span id="business-instagram">–</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Sección servicios ────────────────────────────── -->
+    <section class="services-preview" aria-labelledby="services-section-title">
+      <p class="section-label">Nuestros servicios</p>
+      <h2 class="section-title" id="services-section-title">¿Qué necesitás hoy?</h2>
+      <div class="services-grid" id="services-preview-grid" role="list">
+        <!-- Tarjetas generadas por JS -->
+      </div>
+    </section>
+  </main>
+
+  <!-- ================================================================
+       MODAL — WIZARD DE RESERVA
+       ================================================================ -->
+  <div
+    id="booking-modal"
+    class="modal-overlay"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="booking-modal-title"
+  >
+    <div class="modal-panel" id="booking-panel">
+      <div class="modal-drag-handle" aria-hidden="true"></div>
+
+      <!-- Header del modal -->
+      <div class="modal-header">
+        <h2 class="modal-title" id="booking-modal-title">Reservar turno</h2>
+        <button
+          id="btn-close-booking"
+          class="modal-close"
+          aria-label="Cerrar modal"
+        >✕</button>
+      </div>
+
+      <!-- Barra de progreso del wizard -->
+      <div class="wizard-progress" role="tablist" aria-label="Pasos de reserva">
+        <div class="wizard-step active" id="step-indicator-1" role="tab" aria-selected="true" aria-label="Paso 1: Servicio">
+          <div class="wizard-step-num" data-n="1"></div>
+        </div>
+        <div class="wizard-line" id="wline-1" aria-hidden="true"></div>
+        <div class="wizard-step" id="step-indicator-2" role="tab" aria-selected="false" aria-label="Paso 2: Fecha y hora">
+          <div class="wizard-step-num" data-n="2"></div>
+        </div>
+        <div class="wizard-line" id="wline-2" aria-hidden="true"></div>
+        <div class="wizard-step" id="step-indicator-3" role="tab" aria-selected="false" aria-label="Paso 3: Tus datos">
+          <div class="wizard-step-num" data-n="3"></div>
+        </div>
+      </div>
+
+      <!-- ── Paso 1: Elegir servicio ────────────────────── -->
+      <div id="step-1" role="tabpanel" aria-labelledby="step-indicator-1">
+        <p class="section-label" style="margin-bottom:14px">Elegí un servicio</p>
+        <div id="service-cards-grid" class="services-grid" role="listbox" aria-label="Servicios disponibles">
+          <!-- generado por JS -->
+        </div>
+        <div class="wizard-footer">
+          <button
+            id="btn-step1-next"
+            class="btn btn-primary"
+            disabled
+            aria-label="Continuar al paso 2"
+          >
+            Continuar →
+          </button>
+        </div>
+      </div>
+
+      <!-- ── Paso 2: Elegir fecha y horario ─────────────── -->
+      <div id="step-2" style="display:none" role="tabpanel" aria-labelledby="step-indicator-2">
+        <p class="section-label" style="margin-bottom:14px">Elegí la fecha</p>
+
+        <!-- Calendario personalizado -->
+        <div class="calendar" role="grid" aria-label="Calendario de fechas">
+          <div class="calendar-header">
+            <button id="cal-prev" class="calendar-nav" aria-label="Mes anterior">‹</button>
+            <span class="calendar-month" id="cal-month-label" aria-live="polite"></span>
+            <button id="cal-next" class="calendar-nav" aria-label="Mes siguiente">›</button>
+          </div>
+          <div class="calendar-weekdays" aria-hidden="true">
+            <div class="calendar-weekday">Do</div>
+            <div class="calendar-weekday">Lu</div>
+            <div class="calendar-weekday">Ma</div>
+            <div class="calendar-weekday">Mi</div>
+            <div class="calendar-weekday">Ju</div>
+            <div class="calendar-weekday">Vi</div>
+            <div class="calendar-weekday">Sá</div>
+          </div>
+          <div class="calendar-days" id="cal-days" role="row">
+            <!-- generado por JS -->
+          </div>
+        </div>
+
+        <!-- Slots de horario -->
+        <div id="slots-section" style="display:none">
+          <p class="section-label" style="margin-bottom:10px">
+            Horarios disponibles
+            <span id="slots-date-label" style="color:var(--text-primary);font-size:0.85rem;font-weight:600;margin-left:6px"></span>
+          </p>
+          <div id="slots-loading" style="display:none; text-align:center; padding:16px 0;">
+            <div class="spinner" aria-label="Cargando horarios"></div>
+          </div>
+          <div id="slots-grid" class="slots-grid" role="listbox" aria-label="Horarios disponibles" aria-live="polite">
+            <!-- generado por JS -->
+          </div>
+        </div>
+
+        <div class="wizard-footer">
+          <button id="btn-step2-back" class="btn btn-secondary" aria-label="Volver al paso 1">← Volver</button>
+          <button id="btn-step2-next" class="btn btn-primary" disabled aria-label="Continuar al paso 3">Continuar →</button>
+        </div>
+      </div>
+
+      <!-- ── Paso 3: Datos del cliente + Confirmar ──────── -->
+      <div id="step-3" style="display:none" role="tabpanel" aria-labelledby="step-indicator-3">
+
+        <!-- Resumen de lo elegido -->
+        <div class="booking-summary" aria-label="Resumen de tu reserva">
+          <p class="booking-summary-title">Tu reserva</p>
+          <div class="booking-summary-row">
+            <span class="label">Servicio</span>
+            <span class="value" id="sum-service">–</span>
+          </div>
+          <div class="booking-summary-row">
+            <span class="label">Fecha</span>
+            <span class="value" id="sum-date">–</span>
+          </div>
+          <div class="booking-summary-row">
+            <span class="label">Hora</span>
+            <span class="value" id="sum-time">–</span>
+          </div>
+        </div>
+
+        <!-- Formulario de datos -->
+        <div class="form-group">
+          <label class="form-label" for="input-name">Nombre completo *</label>
+          <input
+            class="form-input"
+            type="text"
+            id="input-name"
+            placeholder="Tu nombre"
+            autocomplete="name"
+            aria-required="true"
+          />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="input-phone">Teléfono *</label>
+          <input
+            class="form-input"
+            type="tel"
+            id="input-phone"
+            placeholder="+54 9 11 0000-0000"
+            autocomplete="tel"
+            aria-required="true"
+          />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="input-notes">Notas (opcional)</label>
+          <textarea
+            class="form-textarea"
+            id="input-notes"
+            placeholder="Ej: quiero el flequillo corto, tengo barba..."
+            rows="3"
+          ></textarea>
+        </div>
+
+        <div class="wizard-footer">
+          <button id="btn-step3-back" class="btn btn-secondary" aria-label="Volver al paso 2">← Volver</button>
+          <button
+            id="btn-confirm"
+            class="btn btn-primary"
+            aria-label="Confirmar reserva"
+          >
+            <span id="btn-confirm-text">Confirmar</span>
+            <span id="btn-confirm-spinner" class="spinner" style="display:none" aria-label="Procesando..."></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ── Pantalla de éxito ───────────────────────────── -->
+      <div id="step-success" style="display:none" role="status" aria-live="assertive">
+        <div class="success-screen">
+          <div class="success-icon" aria-hidden="true">✓</div>
+          <h2 class="success-title">¡Turno reservado!</h2>
+          <p class="success-subtitle">Te esperamos. Guardá tu código de reserva.</p>
+
+          <div class="booking-code" aria-label="Código de reserva">
+            <div>
+              <p class="booking-code-label">Código</p>
+              <p class="booking-code-value" id="booking-code-value">–</p>
+            </div>
+          </div>
+
+          <div class="booking-summary" aria-label="Detalles de la reserva">
+            <div class="booking-summary-row">
+              <span class="label">Servicio</span>
+              <span class="value" id="success-service">–</span>
+            </div>
+            <div class="booking-summary-row">
+              <span class="label">Fecha</span>
+              <span class="value" id="success-date">–</span>
+            </div>
+            <div class="booking-summary-row">
+              <span class="label">Hora</span>
+              <span class="value" id="success-time">–</span>
+            </div>
+          </div>
+
+          <button
+            id="btn-done"
+            class="btn btn-secondary btn-full"
+            aria-label="Cerrar y volver al inicio"
+          >
+            Cerrar
+          </button>
+        </div>
+      </div>
+
+    </div><!-- /modal-panel -->
+  </div><!-- /booking-modal -->
+
+  <!-- ── Contenedor de toasts ──────────────────────────────── -->
+  <div id="toast-container" aria-live="polite" aria-atomic="false" role="status"></div>
+
+  <!-- Scripts -->
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
