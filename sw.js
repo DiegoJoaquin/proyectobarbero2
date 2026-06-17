@@ -8,7 +8,7 @@
  * ============================================================
  */
 
-const CACHE_NAME = 'blade-co-v9';
+const CACHE_NAME = 'blade-co-v10';
 
 /** Archivos que se cachean al instalar el SW */
 const STATIC_ASSETS = [
