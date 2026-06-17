@@ -73,9 +73,15 @@ function initAdmin() {
 let pinBuffer = '';
 
 function initPinKeypad() {
-  // Usar querySelectorAll directo en vez de caché pre-DOMContentLoaded
   document.querySelectorAll('.pin-key').forEach(key => {
     key.addEventListener('click', () => handlePinKey(key.dataset.key));
+    // Soporte teclado para divs con role=button
+    key.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        handlePinKey(key.dataset.key);
+      }
+    });
   });
 
   // Teclado físico

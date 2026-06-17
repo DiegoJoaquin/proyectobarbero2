@@ -921,8 +921,6 @@ body.demo-mode { padding-top: 38px; }
   margin: 0 auto;
 }
 .pin-key {
-  -webkit-appearance: none;
-  appearance: none;
   width: 80px;
   height: 70px;
   border-radius: var(--radius-md);
@@ -934,25 +932,18 @@ body.demo-mode { padding-top: 38px; }
   font-family: var(--font-mono);
   cursor: pointer;
   transition: all var(--transition);
-  /* Centrado universal — funciona en iOS Safari */
-  position: relative;
-  padding: 0;
-  margin: 0;
+  /* Centrado: en divs el flex funciona perfectamente en todos los browsers */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
-.pin-key span {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  display: block;
-  line-height: 1;
-  pointer-events: none;
-}
-.pin-key:hover:not(:disabled) { background: var(--bg-glass); border-color: var(--border-hover); }
-.pin-key:active:not(:disabled) { transform: scale(0.94); }
-.pin-key.del { color: var(--text-secondary); }
-.pin-key.del span { font-size: 1.1rem; }
-.pin-key:disabled { opacity: 0.4; cursor: not-allowed; }
+.pin-key:hover { background: var(--bg-glass); border-color: var(--border-hover); }
+.pin-key:active { transform: scale(0.94); }
+.pin-key.del { color: var(--text-secondary); font-size: 1.1rem; }
 
 /* ── Dashboard ────────────────────────────────────────────── */
 .admin-layout {
