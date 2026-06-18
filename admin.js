@@ -399,7 +399,7 @@ function openApptDetail(apptId) {
     <div class="appt-detail-actions" style="margin-top:20px">
       ${canAct ? `<button class="btn btn-success btn-full" id="btn-complete-appt">✓ Marcar como completado</button>
                   <button class="btn btn-danger btn-full"  id="btn-cancel-appt">✕ Cancelar turno</button>` : ''}
-      ${appt.status === 'cancelled' ? `<button class="btn btn-danger btn-full" id="btn-delete-appt" style="margin-top:8px; background-color:#ff4d4d; color:white; border:none; padding:12px; border-radius:8px; cursor:pointer;">🗑️ Eliminar turno</button>` : ''}
+      ${['cancelled', 'cancelado'].includes(String(appt.status).toLowerCase()) ? `<button class="btn btn-danger btn-full" id="btn-delete-appt" style="margin-top:8px; background-color:#ff4d4d; color:white; border:none; padding:12px; border-radius:8px; cursor:pointer;">🗑️ Eliminar turno</button>` : ''}
     </div>`;
 
   const cmp = el('btn-complete-appt');

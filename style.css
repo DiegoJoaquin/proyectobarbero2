@@ -337,6 +337,7 @@ body.demo-mode { padding-top: 38px; }
 }
 .form-input::placeholder { color: var(--text-muted); }
 .form-select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238B8BA7' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 40px; cursor: pointer; }
+.form-select option { background-color: var(--bg-secondary); color: var(--text-primary); }
 .form-textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
 
 /* â”€â”€ Spinner de carga â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
