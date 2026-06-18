@@ -349,22 +349,30 @@ async function loadSlots(dateStr) {
 
   if (loadEl) loadEl.style.display = 'none';
 
-  if (!allSlots.length) {
+  const todayStr = formatDateISO(new Date());
+  const now = new Date();
+  const currentHHMM = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+
+  const isBlocked = t => blockedRanges.some(b => t >= b.start_time.substring(0,5) && t < b.end_time.substring(0,5));
+
+  const availableSlots = allSlots.filter(time => {
+    if (dateStr === todayStr && time <= currentHHMM) return false;
+    if (occupiedTimes.includes(time) || isBlocked(time)) return false;
+    return true;
+  });
+
+  if (!availableSlots.length) {
     gridEl.innerHTML = `<p style="color:var(--text-muted);font-size:.85rem;grid-column:1/-1">Sin horarios disponibles.</p>`;
     return;
   }
 
-  const isBlocked = t => blockedRanges.some(b => t >= b.start_time.substring(0,5) && t < b.end_time.substring(0,5));
-
-  gridEl.innerHTML = allSlots.map(time => {
-    const occ = occupiedTimes.includes(time) || isBlocked(time);
+  gridEl.innerHTML = availableSlots.map(time => {
     const sel = time === booking.time;
-    const cls = ['slot-chip', occ?'occupied':'', sel?'selected':''].filter(Boolean).join(' ');
-    return `<button class="${cls}" data-time="${time}" ${occ?'disabled aria-disabled="true"':''}
-      role="option" aria-selected="${sel}" aria-label="${time}${occ?' (no disponible)':''}">${time}</button>`;
+    const cls = ['slot-chip', sel?'selected':''].filter(Boolean).join(' ');
+    return `<button class="${cls}" data-time="${time}" role="option" aria-selected="${sel}" aria-label="${time}">${time}</button>`;
   }).join('');
 
-  qsa('.slot-chip:not(.occupied)', gridEl).forEach(btn => {
+  qsa('.slot-chip', gridEl).forEach(btn => {
     btn.addEventListener('click', () => {
       qsa('.slot-chip', gridEl).forEach(b => { b.classList.remove('selected'); b.setAttribute('aria-selected','false'); });
       btn.classList.add('selected'); btn.setAttribute('aria-selected','true');
