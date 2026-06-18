@@ -399,14 +399,40 @@ function openApptDetail(apptId) {
     <div class="appt-detail-actions" style="margin-top:20px">
       ${canAct ? `<button class="btn btn-success btn-full" id="btn-complete-appt">✓ Marcar como completado</button>
                   <button class="btn btn-danger btn-full"  id="btn-cancel-appt">✕ Cancelar turno</button>` : ''}
+      ${appt.status === 'cancelled' ? `<button class="btn btn-danger btn-full" id="btn-delete-appt" style="margin-top:8px; background-color:#ff4d4d; color:white; border:none; padding:12px; border-radius:8px; cursor:pointer;">🗑️ Eliminar turno</button>` : ''}
     </div>`;
 
   const cmp = el('btn-complete-appt');
   const cnc = el('btn-cancel-appt');
+  const del = el('btn-delete-appt');
   if (cmp) cmp.addEventListener('click', () => updateApptStatus(apptId,'completed'));
   if (cnc) cnc.addEventListener('click', () => updateApptStatus(apptId,'cancelled'));
+  if (del) del.addEventListener('click', () => deleteAppt(apptId));
 
   openModal('appt-detail-modal');
+}
+
+async function deleteAppt(apptId) {
+  if (!confirm('¿Estás seguro de que deseas eliminar este turno permanentemente?')) return;
+  
+  if (DEMO_MODE || !_supabase) {
+    let all = getLocalAppointments();
+    all = all.filter(a => a.id !== apptId);
+    saveLocalAppointments(all);
+  } else {
+    try {
+      const { error } = await _supabase.from('appointments').delete().eq('id', apptId);
+      if (error) throw error;
+    } catch(err) {
+      console.error('Error eliminando, guardando local:', err);
+      let all = getLocalAppointments();
+      all = all.filter(a => a.id !== apptId);
+      saveLocalAppointments(all);
+    }
+  }
+  showToast('Turno eliminado permanentemente.','success');
+  closeModal('appt-detail-modal');
+  await loadDayData();
 }
 
 async function updateApptStatus(apptId, newStatus) {
