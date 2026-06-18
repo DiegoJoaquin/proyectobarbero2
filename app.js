@@ -320,29 +320,46 @@ async function loadSlots(dateStr) {
   let occupiedTimes = [];
   let blockedRanges = [];
 
+  const extractOccupied = (appts) => {
+    let times = [];
+    appts.forEach(a => {
+      const t = a.appointment_time.substring(0,5);
+      times.push(t);
+      const svc = CONFIG.services.find(s => s.name === a.service);
+      if (svc && svc.duration > CONFIG.slotDuration) {
+        const extraSlots = Math.ceil(svc.duration / CONFIG.slotDuration) - 1;
+        let [hh, mm] = t.split(':').map(Number);
+        let curMin = hh * 60 + mm;
+        for (let i = 0; i < extraSlots; i++) {
+          curMin += CONFIG.slotDuration;
+          times.push(`${String(Math.floor(curMin/60)).padStart(2,'0')}:${String(curMin%60).padStart(2,'0')}`);
+        }
+      }
+    });
+    return times;
+  };
+
   if (DEMO_MODE || !_supabase) {
     const data = getLocalAppointments();
-    occupiedTimes = data
-      .filter(a => a.appointment_date===dateStr && ['pending','confirmed'].includes(a.status))
-      .map(a => a.appointment_time.substring(0,5));
+    const activeAppts = data.filter(a => a.appointment_date===dateStr && ['pending','confirmed'].includes(a.status));
+    occupiedTimes = extractOccupied(activeAppts);
     blockedRanges = getLocalBlockedSlots().filter(b => b.slot_date===dateStr);
   } else {
     try {
       const [ar, br] = await Promise.all([
-        _supabase.from('appointments').select('appointment_time').eq('appointment_date',dateStr).in('status',['pending','confirmed']),
+        _supabase.from('appointments').select('appointment_time, service').eq('appointment_date',dateStr).in('status',['pending','confirmed']),
         _supabase.from('blocked_slots').select('start_time,end_time').eq('slot_date',dateStr)
       ]);
       if (ar.error) throw ar.error;
       if (br.error) throw br.error;
-      occupiedTimes = (ar.data||[]).map(a => a.appointment_time.substring(0,5));
+      occupiedTimes = extractOccupied(ar.data || []);
       blockedRanges = br.data||[];
     } catch (err) {
       console.error('Error Supabase, usando datos locales:', err);
       // Fallback a local si Supabase falla
       const data = getLocalAppointments();
-      occupiedTimes = data
-        .filter(a => a.appointment_date===dateStr && ['pending','confirmed'].includes(a.status))
-        .map(a => a.appointment_time.substring(0,5));
+      const activeAppts = data.filter(a => a.appointment_date===dateStr && ['pending','confirmed'].includes(a.status));
+      occupiedTimes = extractOccupied(activeAppts);
       blockedRanges = getLocalBlockedSlots().filter(b => b.slot_date===dateStr);
     }
   }
@@ -354,10 +371,19 @@ async function loadSlots(dateStr) {
   const currentHHMM = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
 
   const isBlocked = t => blockedRanges.some(b => t >= b.start_time.substring(0,5) && t < b.end_time.substring(0,5));
+  const reqSlots = booking.service ? Math.ceil(booking.service.duration / CONFIG.slotDuration) : 1;
 
   const availableSlots = allSlots.filter(time => {
     if (dateStr === todayStr && time <= currentHHMM) return false;
-    if (occupiedTimes.includes(time) || isBlocked(time)) return false;
+    
+    let [hh, mm] = time.split(':').map(Number);
+    let curMin = hh * 60 + mm;
+    for (let i = 0; i < reqSlots; i++) {
+       const tStr = `${String(Math.floor(curMin/60)).padStart(2,'0')}:${String(curMin%60).padStart(2,'0')}`;
+       if (occupiedTimes.includes(tStr) || isBlocked(tStr)) return false;
+       if (i > 0 && !allSlots.includes(tStr)) return false;
+       curMin += CONFIG.slotDuration;
+    }
     return true;
   });
 

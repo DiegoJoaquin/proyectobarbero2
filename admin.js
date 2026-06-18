@@ -262,13 +262,31 @@ function renderAgenda(appts, blockedSlots) {
   let html = '<div class="agenda-wrap">';
   html    += '<div class="agenda-line" aria-hidden="true"></div>';
 
+  const occupiedByExtended = {};
+  appts.forEach(a => {
+    if (['pending','confirmed'].includes(a.status)) {
+      const svc = CONFIG.services.find(s => s.name === a.service);
+      if (svc && svc.duration > CONFIG.slotDuration) {
+        const extraSlots = Math.ceil(svc.duration / CONFIG.slotDuration) - 1;
+        let [hh, mm] = a.appointment_time.substring(0,5).split(':').map(Number);
+        let curMin = hh * 60 + mm;
+        for (let i = 0; i < extraSlots; i++) {
+          curMin += CONFIG.slotDuration;
+          const tStr = `${String(Math.floor(curMin/60)).padStart(2,'0')}:${String(curMin%60).padStart(2,'0')}`;
+          occupiedByExtended[tStr] = a;
+        }
+      }
+    }
+  });
+
   for (const time of allSlots) {
     const appt    = appts.find(a => a.appointment_time?.substring(0,5) === time);
     const blocked = isBlocked(time);
+    const extendedAppt = occupiedByExtended[time];
     const isPast  = isToday && time < nowStr;
 
     let dotCls = 'agenda-dot';
-    if (appt)    dotCls += ' booked';
+    if (appt || extendedAppt) dotCls += ' booked';
     else if (blocked) dotCls += ' blocked';
     if (isPast)  dotCls += ' past';
 
@@ -293,6 +311,8 @@ function renderAgenda(appts, blockedSlots) {
     } else if (blocked) {
       const block = getBlock(time);
       html += `<div class="agenda-blocked"><span>🔒</span>${escHtml(block?.reason || 'Bloqueado')}</div>`;
+    } else if (extendedAppt) {
+      html += `<div class="agenda-blocked" style="opacity: 0.7;"><span>↳</span> Ocupado por ${escHtml(extendedAppt.client_name)}</div>`;
     } else {
       html += `<div class="agenda-free" data-time="${time}" data-date="${selectedDate}"
         role="button" tabindex="0" aria-label="Libre a las ${time}, toca para agregar">
@@ -449,23 +469,58 @@ async function loadAddTimeSlots(dateStr) {
   let occupiedTimes = [];
   let blockedRanges = [];
 
+  const extractOccupied = (appts) => {
+    let times = [];
+    appts.forEach(a => {
+      const t = a.appointment_time.substring(0,5);
+      times.push(t);
+      const svc = CONFIG.services.find(s => s.name === a.service);
+      if (svc && svc.duration > CONFIG.slotDuration) {
+        const extraSlots = Math.ceil(svc.duration / CONFIG.slotDuration) - 1;
+        let [hh, mm] = t.split(':').map(Number);
+        let curMin = hh * 60 + mm;
+        for (let i = 0; i < extraSlots; i++) {
+          curMin += CONFIG.slotDuration;
+          times.push(`${String(Math.floor(curMin/60)).padStart(2,'0')}:${String(curMin%60).padStart(2,'0')}`);
+        }
+      }
+    });
+    return times;
+  };
+
   if (DEMO_MODE || !_supabase) {
     const all = getLocalAppointments();
-    occupiedTimes = all.filter(a=>a.appointment_date===dateStr&&['pending','confirmed'].includes(a.status)).map(a=>a.appointment_time.substring(0,5));
+    const activeAppts = all.filter(a=>a.appointment_date===dateStr&&['pending','confirmed'].includes(a.status));
+    occupiedTimes = extractOccupied(activeAppts);
     blockedRanges = getLocalBlockedSlots().filter(b=>b.slot_date===dateStr);
   } else {
     try {
       const [ar,br] = await Promise.all([
-        _supabase.from('appointments').select('appointment_time').eq('appointment_date',dateStr).in('status',['pending','confirmed']),
+        _supabase.from('appointments').select('appointment_time, service').eq('appointment_date',dateStr).in('status',['pending','confirmed']),
         _supabase.from('blocked_slots').select('start_time,end_time').eq('slot_date',dateStr)
       ]);
-      if (!ar.error) occupiedTimes=(ar.data||[]).map(a=>a.appointment_time.substring(0,5));
-      if (!br.error) blockedRanges=br.data||[];
+      if (!ar.error) occupiedTimes = extractOccupied(ar.data||[]);
+      if (!br.error) blockedRanges = br.data||[];
     } catch {}
   }
 
+  const selectedServiceEl = el('add-service');
+  const selectedService = selectedServiceEl ? selectedServiceEl.value : '';
+  const svcConfig = CONFIG.services.find(s => s.name === selectedService);
+  const reqSlots = svcConfig ? Math.ceil(svcConfig.duration / CONFIG.slotDuration) : 1;
+
   const isBlocked = t => blockedRanges.some(b=>t>=b.start_time.substring(0,5)&&t<b.end_time.substring(0,5));
-  const available = allSlots.filter(t=>!occupiedTimes.includes(t)&&!isBlocked(t));
+  const available = allSlots.filter(time => {
+    let [hh, mm] = time.split(':').map(Number);
+    let curMin = hh * 60 + mm;
+    for (let i = 0; i < reqSlots; i++) {
+       const tStr = `${String(Math.floor(curMin/60)).padStart(2,'0')}:${String(curMin%60).padStart(2,'0')}`;
+       if (occupiedTimes.includes(tStr) || isBlocked(tStr)) return false;
+       if (i > 0 && !allSlots.includes(tStr)) return false;
+       curMin += CONFIG.slotDuration;
+    }
+    return true;
+  });
 
   if (!available.length) { sel.innerHTML='<option value="">Sin horarios disponibles</option>'; return; }
   sel.innerHTML = '<option value="">— Elegí un horario —</option>' + available.map(t=>`<option value="${t}">${t}</option>`).join('');
@@ -619,6 +674,7 @@ function bindAdminEvents() {
   on('btn-save-appt',        'click', saveNewAppt);
   on('btn-save-block',       'click', saveBlock);
   on('add-date',             'change', ()=>loadAddTimeSlots(el('add-date')?.value));
+  on('add-service',          'change', ()=>loadAddTimeSlots(el('add-date')?.value));
 
   // Cerrar modal al tocar overlay
   ['appt-detail-modal','add-appt-modal','block-modal'].forEach(id => {
